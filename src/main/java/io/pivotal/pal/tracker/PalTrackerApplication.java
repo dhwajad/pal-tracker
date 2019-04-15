@@ -1,4 +1,4 @@
-package io.pivotal.pal.tacker;
+package io.pivotal.pal.tracker;
 
 
 import org.springframework.boot.SpringApplication;
