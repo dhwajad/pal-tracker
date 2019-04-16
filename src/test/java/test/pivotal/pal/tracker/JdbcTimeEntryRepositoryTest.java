@@ -38,7 +38,6 @@ public class JdbcTimeEntryRepositoryTest {
     public void createInsertsATimeEntryRecord() throws Exception {
         TimeEntry newTimeEntry = new TimeEntry(123, 321, LocalDate.parse("2017-01-09"), 8);
         TimeEntry entry = subject.create(newTimeEntry);
-
         Map<String, Object> foundEntry = jdbcTemplate.queryForMap("Select * from time_entries where id = ?", entry.getId());
 
         assertThat(foundEntry.get("id")).isEqualTo(entry.getId());
@@ -79,7 +78,6 @@ public class JdbcTimeEntryRepositoryTest {
     @Test
     public void findReturnsNullWhenNotFound() throws Exception {
         TimeEntry timeEntry = subject.find(999L);
-
         assertThat(timeEntry).isNull();
     }
 
