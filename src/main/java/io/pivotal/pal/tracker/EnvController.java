@@ -10,7 +10,7 @@ import java.util.Map;
 @RestController
 public class EnvController {
 
-    private Map env = new HashMap<String, String>();
+    private Map<String, String> env = new HashMap<>();
 
     public EnvController(@Value("${port:NA}") String port, @Value("${memory.limit:NA}") String memoryLimit,
                          @Value("${cf.instance.index:NA}") String cfInstanceIndex, @Value("${cf.instance.addr:NA}") String cfInstanceAddress) {

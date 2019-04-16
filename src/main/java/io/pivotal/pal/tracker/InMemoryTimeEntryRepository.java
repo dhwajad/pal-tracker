@@ -1,14 +1,14 @@
 package io.pivotal.pal.tracker;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
-    private Map<Long, TimeEntry> timeEntries = new HashMap<>();
+    private Map<Long, TimeEntry> timeEntries = new ConcurrentHashMap<>();
     private AtomicLong idSequence = new AtomicLong(1);
 
     public TimeEntry create(TimeEntry timeEntry) {
@@ -26,14 +26,15 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     public TimeEntry update(long id, TimeEntry timeEntry) {
-        TimeEntry toBeUpdated = timeEntries.get(id);
-        if(toBeUpdated != null) {
+        if(timeEntries.containsKey(id)) {
+            TimeEntry toBeUpdated = timeEntries.get(id);
             toBeUpdated.setDate(timeEntry.getDate());
             toBeUpdated.setHours(timeEntry.getHours());
             toBeUpdated.setProjectId(timeEntry.getProjectId());
             toBeUpdated.setUserId(timeEntry.getUserId());
+            return timeEntries.put(id, toBeUpdated);
         }
-        return timeEntries.put(id, toBeUpdated);
+        return null;
     }
 
     public void delete(long id) {
